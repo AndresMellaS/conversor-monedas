@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de Monedas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+          --bg:      #f5f0e8;
+          --surface: #ede8dc;
+          --card:    #ffffff;
+          --border:  #d4cfc3;
+          --ink:     #1a1814;
+          --ink2:    #5a5650;
+          --accent:  #c8392b;
+          --accent2: #2b6cb0;
+          --gold:    #b7791f;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+          background: var(--bg);
+          color: var(--ink);
+          font-family: 'DM Mono', monospace;
+          min-height: 100vh;
+        }
+
+        body::after {
+          content: '';
+          position: fixed;
+          top: 0; left: 0; right: 0;
+          height: 4px;
+          background: var(--accent);
+          z-index: 100;
+        }
+
+        .container {
+          max-width: 900px;
+          margin: 0 auto;
+          padding: 56px 32px 80px;
+        }
+
+        /* Header */
+        header {
+          display: flex;
+          align-items: flex-end;
+          justify-content: space-between;
+          margin-bottom: 48px;
+          padding-bottom: 24px;
+          border-bottom: 2px solid var(--ink);
+        }
+
+        .brand-name {
+          font-family: 'Playfair Display', serif;
+          font-size: 44px;
+          font-weight: 900;
+          letter-spacing: -2px;
+          line-height: 1;
+        }
+
+        .header-date {
+          font-size: 11px;
+          color: var(--ink2);
+          letter-spacing: 0.5px;
+          text-align: right;
+        }
+
+        /* Stats */
+        .stats-row {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1px;
+          background: var(--border);
+          border: 1px solid var(--border);
+          margin-bottom: 36px;
+        }
+
+        .stat {
+          background: var(--card);
+          padding: 18px 22px;
+        }
+
+        .stat-label {
+          font-size: 9px;
+          letter-spacing: 3px;
+          text-transform: uppercase;
+          color: var(--ink2);
+          margin-bottom: 4px;
+        }
+
+        .stat-value {
+          font-family: 'Playfair Display', serif;
+          font-size: 26px;
+          font-weight: 700;
+          letter-spacing: -1px;
+        }
+
+        .stat-value.red  { color: var(--accent); }
+        .stat-value.gold { color: var(--gold); }
+
+        /* Main grid */
+        .main-grid {
+          display: grid;
+          grid-template-columns: 1fr 340px;
+          gap: 24px;
+          align-items: start;
+        }
+
+        /* Card */
+        .card {
+          background: var(--card);
+          border: 1px solid var(--border);
+          box-shadow: 4px 4px 0 var(--ink);
+          padding: 32px;
+        }
+
+        .section-label {
+          font-size: 9px;
+          letter-spacing: 4px;
+          text-transform: uppercase;
+          color: var(--ink2);
+          margin-bottom: 22px;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+
+        .section-label::after {
+          content: '';
+          flex: 1;
+          height: 1px;
+          background: var(--border);
+        }
+
+        .field-row {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 14px;
+          margin-bottom: 18px;
+        }
+
+        .field { display: flex; flex-direction: column; gap: 7px; }
+
+        .field-label {
+          font-size: 9px;
+          letter-spacing: 3px;
+          text-transform: uppercase;
+          color: var(--ink2);
+        }
+
+        select, input[type="number"] {
+          background: var(--surface);
+          border: 1px solid var(--border);
+          color: var(--ink);
+          font-family: 'DM Mono', monospace;
+          font-size: 13px;
+          padding: 11px 13px;
+          width: 100%;
+          appearance: none;
+          border-radius: 0;
+          transition: border-color 0.2s;
+        }
+
+        select {
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235a5650' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+          background-repeat: no-repeat;
+          background-position: right 12px center;
+          padding-right: 30px;
+          cursor: pointer;
+        }
+
+        select:focus, input[type="number"]:focus {
+          outline: none;
+          border-color: var(--ink);
+          box-shadow: 2px 2px 0 var(--ink);
+        }
+
+        input[type="number"]::placeholder { color: var(--border); }
+
+        .swap-row {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          margin-bottom: 18px;
+        }
+
+        .swap-line { flex: 1; height: 1px; background: var(--border); }
+
+        .swap-btn {
+          background: var(--ink);
+          color: var(--bg);
+          border: none;
+          width: 34px; height: 34px;
+          display: flex; align-items: center; justify-content: center;
+          cursor: pointer;
+          font-size: 15px;
+          transition: all 0.2s;
+          flex-shrink: 0;
+        }
+
+        .swap-btn:hover {
+          background: var(--accent);
+          transform: rotate(180deg);
+        }
+
+        .amount-field { margin-bottom: 22px; }
+
+        .amount-field input {
+          font-size: 20px;
+          padding: 15px 13px;
+          letter-spacing: -0.5px;
+        }
+
+        .convert-btn {
+          width: 100%;
+          background: var(--ink);
+          color: var(--bg);
+          border: none;
+          font-family: 'DM Mono', monospace;
+          font-size: 11px;
+          letter-spacing: 4px;
+          text-transform: uppercase;
+          padding: 17px;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+
+        .convert-btn:hover {
+          background: var(--accent);
+          box-shadow: 3px 3px 0 var(--ink);
+          transform: translate(-1px, -1px);
+        }
+
+        .convert-btn:active {
+          transform: translate(1px, 1px);
+          box-shadow: none;
+        }
+
+        .result-box {
+          margin-top: 22px;
+          border: 1px solid var(--border);
+          padding: 18px;
+          background: var(--surface);
+          display: none;
+        }
+
+        .result-box.visible { display: block; }
+
+        .result-eyebrow {
+          font-size: 9px;
+          letter-spacing: 3px;
+          text-transform: uppercase;
+          color: var(--ink2);
+          margin-bottom: 6px;
+        }
+
+        .result-amount {
+          font-family: 'Playfair Display', serif;
+          font-size: 34px;
+          font-weight: 700;
+          color: var(--accent);
+          letter-spacing: -1px;
+          margin-bottom: 6px;
+        }
+
+        .result-rate {
+          font-size: 11px;
+          color: var(--ink2);
+        }
+
+        .result-rate strong { color: var(--accent2); }
+
+        .error-box {
+          margin-top: 14px;
+          border-left: 3px solid var(--accent);
+          padding: 11px 14px;
+          background: #fff5f5;
+          font-size: 12px;
+          color: var(--accent);
+          display: none;
+        }
+
+        .error-box.visible { display: block; }
+
+        /* History */
+        .history-panel {
+          background: var(--card);
+          border: 1px solid var(--border);
+          box-shadow: 4px 4px 0 var(--ink);
+          max-height: 620px;
+          display: flex;
+          flex-direction: column;
+        }
+
+        .history-head {
+          padding: 18px 22px 14px;
+          border-bottom: 1px solid var(--border);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-shrink: 0;
+        }
+
+        .history-title {
+          font-family: 'Playfair Display', serif;
+          font-size: 17px;
+          font-weight: 700;
+        }
+
+        .history-actions { display: flex; align-items: center; gap: 8px; }
+
+        .count-badge {
+          background: var(--ink);
+          color: var(--bg);
+          font-size: 10px;
+          padding: 3px 8px;
+          letter-spacing: 1px;
+        }
+
+        .clear-btn {
+          background: transparent;
+          border: 1px solid var(--border);
+          color: var(--ink2);
+          font-family: 'DM Mono', monospace;
+          font-size: 10px;
+          letter-spacing: 1px;
+          padding: 4px 11px;
+          cursor: pointer;
+          transition: all 0.2s;
+          text-transform: uppercase;
+        }
+
+        .clear-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+        .history-body { overflow-y: auto; flex: 1; }
+        .history-body::-webkit-scrollbar { width: 3px; }
+        .history-body::-webkit-scrollbar-thumb { background: var(--border); }
+
+        .history-empty {
+          padding: 44px 22px;
+          text-align: center;
+          color: var(--ink2);
+          font-size: 11px;
+          letter-spacing: 1px;
+        }
+
+        .history-empty-icon {
+          font-family: 'Playfair Display', serif;
+          font-size: 40px;
+          display: block;
+          margin-bottom: 10px;
+          opacity: 0.2;
+          font-style: italic;
+        }
+
+        .history-item {
+          padding: 13px 22px;
+          border-bottom: 1px solid var(--surface);
+          transition: background 0.15s;
+        }
+
+        .history-item:hover { background: var(--surface); }
+
+        .history-item-top {
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+          margin-bottom: 3px;
+        }
+
+        .history-pair {
+          font-size: 12px;
+          font-weight: 500;
+          color: var(--ink);
+        }
+
+        .history-arrow { color: var(--accent); margin: 0 5px; }
+
+        .history-result {
+          font-family: 'Playfair Display', serif;
+          font-size: 15px;
+          font-weight: 700;
+          color: var(--accent2);
+        }
+
+        .history-item-bottom {
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .history-monto { font-size: 11px; color: var(--ink2); }
+        .history-time  { font-size: 10px; color: var(--border); }
+        .history-tasa  { font-size: 10px; color: var(--gold); }
+
+        .spinner {
+          display: inline-block;
+          width: 13px; height: 13px;
+          border: 2px solid rgba(245,240,232,0.3);
+          border-top-color: var(--bg);
+          border-radius: 50%;
+          animation: spin 0.7s linear infinite;
+          vertical-align: middle;
+          margin-right: 8px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @media (max-width: 700px) {
+          .main-grid  { grid-template-columns: 1fr; }
+          .field-row  { grid-template-columns: 1fr; }
+          .stats-row  { grid-template-columns: 1fr; }
+          .brand-name { font-size: 32px; }
+          header      { flex-direction: column; align-items: flex-start; gap: 12px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <header>
+        <div class="brand-name">Conversor de Monedas</div>
+        <div class="header-date" id="live-clock"></div>
+    </header>
+
+    <div class="stats-row">
+        <div class="stat">
+            <div class="stat-label">Total conversiones</div>
+            <div class="stat-value red" id="stat-total">0</div>
+        </div>
+        <div class="stat">
+            <div class="stat-label">Última conversión</div>
+            <div class="stat-value gold" id="stat-last">—</div>
+        </div>
+    </div>
+
+    <div class="main-grid">
+
+        <div class="card">
+            <div class="section-label">Nueva conversión</div>
+
+            <div class="field-row">
+                <div class="field">
+                    <span class="field-label">Moneda origen</span>
+                    <select id="from-currency"></select>
+                </div>
+                <div class="field">
+                    <span class="field-label">Moneda destino</span>
+                    <select id="to-currency"></select>
+                </div>
+            </div>
+
+            <div class="swap-row">
+                <div class="swap-line"></div>
+                <button class="swap-btn" onclick="swap()" title="Intercambiar">⇄</button>
+                <div class="swap-line"></div>
+            </div>
+
+            <div class="amount-field field">
+                <span class="field-label">Monto</span>
+                <input type="number" id="amount" placeholder="0.00" min="0" step="any">
+            </div>
+
+            <button class="convert-btn" id="convert-btn" onclick="convertir()">
+                Convertir
+            </button>
+
+            <div class="result-box" id="result-box">
+                <div class="result-eyebrow">Resultado</div>
+                <div class="result-amount" id="result-amount">—</div>
+                <div class="result-rate" id="result-rate"></div>
+            </div>
+
+            <div class="error-box" id="error-box"></div>
+        </div>
+
+        <div class="history-panel">
+            <div class="history-head">
+                <span class="history-title">Historial</span>
+                <div class="history-actions">
+                    <span class="count-badge" id="history-count">0</span>
+                    <button class="clear-btn" onclick="limpiarHistorial()">Limpiar</button>
+                </div>
+            </div>
+            <div class="history-body" id="history-body">
+                <div class="history-empty">
+                    <span class="history-empty-icon">∅</span>
+                    Sin conversiones aún
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const MONEDAS = {
+      USD: 'Dólar estadounidense', EUR: 'Euro',
+      BRL: 'Real brasileño',      ARS: 'Peso argentino',
+      CLP: 'Peso chileno',        MXN: 'Peso mexicano',
+      COP: 'Peso colombiano',     PEN: 'Sol peruano',
+      UYU: 'Peso uruguayo',       BOB: 'Boliviano',
+      GBP: 'Libra esterlina',     JPY: 'Yen japonés',
+      CNY: 'Yuan chino',          CAD: 'Dólar canadiense',
+      AUD: 'Dólar australiano',   CHF: 'Franco suizo',
+      INR: 'Rupia india',         KRW: 'Won surcoreano',
+      SEK: 'Corona sueca',        NOK: 'Corona noruega',
+      NZD: 'Dólar neozelandés',   SGD: 'Dólar de Singapur',
+      HKD: 'Dólar de Hong Kong',
+    };
+
+    function initSelects() {
+      const from = document.getElementById('from-currency');
+      const to   = document.getElementById('to-currency');
+      Object.entries(MONEDAS).forEach(([code, name]) => {
+        from.add(new Option(`${code} — ${name}`, code));
+        to.add(new Option(`${code} — ${name}`, code));
+      });
+      from.value = 'USD';
+      to.value   = 'BRL';
+    }
+
+    function swap() {
+      const from = document.getElementById('from-currency');
+      const to   = document.getElementById('to-currency');
+      [from.value, to.value] = [to.value, from.value];
+      ocultarResultado();
+    }
+
+    async function convertir() {
+      const desde = document.getElementById('from-currency').value;
+      const hasta = document.getElementById('to-currency').value;
+      const monto = parseFloat(document.getElementById('amount').value);
+
+      ocultarResultado();
+      ocultarError();
+
+      if (!monto || isNaN(monto) || monto <= 0) {
+        mostrarError('Ingresa un monto válido mayor a 0.');
+        return;
+      }
+
+      const btn = document.getElementById('convert-btn');
+      btn.innerHTML = '<span class="spinner"></span>Consultando...';
+      btn.disabled  = true;
+
+      try {
+        const res  = await fetch('/api/convertir', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ desde, hasta, monto })
+        });
+        const data = await res.json();
+
+        if (!res.ok) { mostrarError(data.error || 'Error al convertir.'); return; }
+
+        mostrarResultado(data);
+        await cargarHistorial();
+
+      } catch (e) {
+        mostrarError('No se pudo conectar con el servidor.');
+      } finally {
+        btn.innerHTML = 'Convertir';
+        btn.disabled  = false;
+      }
+    }
+
+    function fmt(num, currency) {
+      try {
+        return new Intl.NumberFormat('es-ES', {
+          style: 'currency', currency,
+          maximumFractionDigits: ['JPY','KRW'].includes(currency) ? 0 : 2
+        }).format(num);
+      } catch {
+        return `${num.toLocaleString('es-ES', { maximumFractionDigits: 4 })} ${currency}`;
+      }
+    }
+
+    function mostrarResultado(data) {
+      document.getElementById('result-box').classList.add('visible');
+      document.getElementById('result-amount').textContent = fmt(data.resultado, data.hasta);
+      document.getElementById('result-rate').innerHTML =
+        `1 <strong>${data.desde}</strong> = <strong>${data.tasa.toLocaleString('es-ES',{maximumFractionDigits:6})}</strong> ${data.hasta}`;
+    }
+
+    function ocultarResultado() {
+      document.getElementById('result-box').classList.remove('visible');
+    }
+
+    function mostrarError(msg) {
+      const el = document.getElementById('error-box');
+      el.textContent = '⚠ ' + msg;
+      el.classList.add('visible');
+    }
+
+    function ocultarError() {
+      document.getElementById('error-box').classList.remove('visible');
+    }
+
+    async function cargarHistorial() {
+      try {
+        const res  = await fetch('/api/historial');
+        const data = await res.json();
+        renderHistorial(data);
+        actualizarStats(data);
+      } catch (e) {
+        console.error('Error cargando historial:', e);
+      }
+    }
+
+    function renderHistorial(lista) {
+      const body = document.getElementById('history-body');
+      document.getElementById('history-count').textContent = lista.length;
+
+      if (!lista.length) {
+        body.innerHTML = `
+          <div class="history-empty">
+            <span class="history-empty-icon">∅</span>
+            Sin conversiones aún
+          </div>`;
+        return;
+      }
+
+      body.innerHTML = [...lista].reverse().map(item => {
+        const ts    = new Date(item.timestamp);
+        const fecha = ts.toLocaleDateString('es-ES', { day:'2-digit', month:'short' });
+        const hora  = ts.toLocaleTimeString('es-ES', { hour:'2-digit', minute:'2-digit' });
+        return `
+          <div class="history-item">
+            <div class="history-item-top">
+              <span class="history-pair">
+                ${item.desde}<span class="history-arrow">→</span>${item.hasta}
+              </span>
+              <span class="history-result">${fmt(item.resultado, item.hasta)}</span>
+            </div>
+            <div class="history-item-bottom">
+              <span class="history-monto">${fmt(item.monto, item.desde)}</span>
+              <span class="history-tasa">×${item.tasa.toLocaleString('es-ES',{maximumFractionDigits:4})}</span>
+              <span class="history-time">${fecha} ${hora}</span>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    async function limpiarHistorial() {
+      if (!confirm('¿Limpiar todo el historial?')) return;
+      try {
+        await fetch('/api/historial', { method: 'DELETE' });
+        await cargarHistorial();
+        ocultarResultado();
+      } catch (e) {
+        mostrarError('Error al limpiar el historial.');
+      }
+    }
+
+    function actualizarStats(lista) {
+      document.getElementById('stat-total').textContent = lista.length;
+      if (!lista.length) {
+        document.getElementById('stat-last').textContent = '—';
+        return;
+      }
+      const last = new Date(lista[lista.length - 1].timestamp);
+      document.getElementById('stat-last').textContent =
+        last.toLocaleTimeString('es-ES', { hour:'2-digit', minute:'2-digit' });
+    }
+
+    function actualizarReloj() {
+      document.getElementById('live-clock').textContent =
+        new Date().toLocaleString('es-ES', {
+          weekday:'short', day:'2-digit',
+          month:'short', year:'numeric',
+          hour:'2-digit', minute:'2-digit', second:'2-digit'
+        });
+    }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Enter') convertir(); });
+
+    initSelects();
+    cargarHistorial();
+    actualizarReloj();
+    setInterval(actualizarReloj, 1000);
+</script>
+</body>
+</html>
