@@ -40,7 +40,7 @@ Tabla de contenidos
 
 ```mermaid
 flowchart TD
-    A[ UI / Menu] --> B[Controller]
+    A[ util / Menu] --> B[Controller]
     B --> C[ Service]
     C --> D[ Repository]
     C --> E[ApiService]
