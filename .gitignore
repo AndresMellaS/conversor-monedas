@@ -43,4 +43,6 @@ Thumbs.db
 # Datos locales
 historial.json
 
+# Configuración con credenciales — nunca subir al repo
+ConversorMonedas/src/main/resources/application.properties
 

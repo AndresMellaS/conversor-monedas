@@ -1,0 +1,6 @@
+# Copia este archivo como src/main/resources/application.properties
+# y reemplaza el valor con tu API key de https://www.exchangerate-api.com
+
+server.port=8081
+logging.level.org.apache.tomcat=ERROR
+exchangerate.api.key=TU_API_KEY_AQUI
