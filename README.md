@@ -1,4 +1,4 @@
-<h1 align="center"> 💱 Conversor de Monedas </h1>
+<h1 align="center">  Conversor de Monedas </h1>
 
 <p align="center">
 Aplicación de conversión de divisas en tiempo real con dos modos de ejecución: consola interactiva y frontend web, ambos conectados al mismo backend con persistencia de historial.
@@ -6,8 +6,6 @@ Aplicación de conversión de divisas en tiempo real con dos modos de ejecución
 
 <p align="center">
 <img src="https://img.shields.io/badge/Java-17+-orange?style=for-the-badge&logo=java" />
-<img src="https://img.shields.io/badge/Spring%20Boot-3.2.3-6DB33F?style=for-the-badge&logo=springboot" />
-<img src="https://img.shields.io/badge/Gson-2.10.1-4285F4?style=for-the-badge" />
 <img src="https://img.shields.io/badge/Estado-En%20construcción-yellow?style=for-the-badge" />
 </p>
 
@@ -46,11 +44,11 @@ Aplicación de conversión de divisas en tiempo real con dos modos de ejecución
 
 ```mermaid
 flowchart TD
-    A[🖥️ UI / Menu] --> B[🎮 Controller]
-    B --> C[⚙️ Service]
-    C --> D[🗃️ Repository]
-    C --> E[🌐 ApiService]
-    D --> F[📦 Model]
+    A[ UI / Menu] --> B[ Controller]
+    B --> C[ Service]
+    C --> D[ Repository]
+    C --> E[ ApiService]
+    D --> F[ Model]
     E --> F
 ```
 
