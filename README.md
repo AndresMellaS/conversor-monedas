@@ -12,6 +12,7 @@ Aplicación de conversión de divisas en tiempo real con dos modos de ejecución
 Tabla de contenidos
 
 - [Funcionalidades](#funcionalidades)
+- [Arquitectura del proyecto](#arquitectura-del-proyecto)
 - [Demo](#demo)
 - [Instalación y ejecución](#instalación-y-ejecución)
 - [API REST](#api-rest)
@@ -33,6 +34,27 @@ Tabla de contenidos
 - API REST con Spring Boot — endpoints `/api/convertir` y `/api/historial`
 - Dos modos: consola interactiva y frontend web
 
+---
+<a name="arquitectura-del-proyecto"></a>
+ <em>**Arquitectura del proyecto**</em>
+
+```mermaid
+flowchart TD
+    A[ UI / Menu] --> B[Controller]
+    B --> C[ Service]
+    C --> D[ Repository]
+    C --> E[ApiService]
+    D --> F[Model]
+    E --> F
+```
+
+<em> Descripción de las capas</em>
+
+- UI / Menu — Maneja la interacción con el usuario desde la consola.
+- Controller — Expone los endpoints REST y delega la lógica al Service.
+- Service — Contiene la lógica de negocio: conversiones y consumo de la API externa.
+- Repository — Gestiona el almacenamiento y recuperación del historial en `historial.json`.
+- Model — Define las estructuras de datos: `Conversion` y `Moneda`.
 ---
 <a name="demo"></a>
 <em> **Demo** </em>
