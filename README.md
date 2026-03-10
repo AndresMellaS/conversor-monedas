@@ -211,4 +211,5 @@ Este proyecto usa [ExchangeRate API](https://www.exchangerate-api.com/) en su ve
 <em>**Autor**</em> 
 
 Daniel Sepúlveda M.
+
 *Challenge Alura — One Oracle Next Education*
