@@ -1,12 +1,16 @@
- Conversor de Monedas
+<h1 align="center"> Conversor de Monedas  </h1> 
 
 Proyecto desarrollado como parte del Challenge de Alura — Backend con Java.
+
+<h4 align="center">
+:construction: Proyecto en construcción :construction:
+</h4>
 
 Aplicación de conversión de divisas en tiempo real con dos modos de ejecución: consola interactiva y frontend web, ambos conectados al mismo backend con persistencia de historial.
 
 ---
 
- Funcionalidades
+ <em>**Funcionalidades**</em>
 
 - Conversión entre 23 monedas con tasas en tiempo real via API
 - Historial de todas las conversiones realizadas
@@ -17,7 +21,7 @@ Aplicación de conversión de divisas en tiempo real con dos modos de ejecución
 
 ---
 
-Modo Consola
+<em> **Modo Consola** </em>
 
 Menú principal
 
@@ -33,7 +37,7 @@ Historial con marcas de tiempo
 
 ---
 
-Modo Web
+<em> Su título aquí </em>
 
 Servidor Spring Boot activo
 
@@ -45,7 +49,7 @@ Frontend en el navegador
 
 ---
 
-Estructura del proyecto
+<em> **Estructura del proyecto** </em>
 
 ```
 src/main/
@@ -71,7 +75,7 @@ src/main/
 
 ---
 
-Cómo ejecutar
+<em> Cómo ejecutar </em>
 
 Requisitos
 - Java 17 o superior
@@ -92,7 +96,7 @@ mvn spring-boot:run -Dspring-boot.run.arguments=--consola
 
 ---
 
-API REST
+<em>**API REST**</em>
 
 | Método | Endpoint | Descripción |
 |--------|----------|-------------|
@@ -124,7 +128,7 @@ Ejemplo de response
 
 ---
 
-Monedas disponibles
+<em> **Monedas disponibles** </em>
 
 | Código | Moneda |
 |--------|--------|
@@ -154,18 +158,18 @@ Monedas disponibles
 
 ---
 
-Tecnologías
+<em>**Tecnologías**</em> 
 
-- **Java 17+** — Lógica de negocio y backend
-- **Spring Boot 3.2.3** — Servidor web y API REST
-- **Gson 2.10.1** — Parseo de JSON y persistencia
-- **HttpClient** — Consumo de API externa
-- **java.time** — Marcas de tiempo
-- **HTML / CSS / JS** — Frontend sin frameworks
+- Java 17+ — Lógica de negocio y backend
+- Spring Boot 3.2.3 — Servidor web y API REST
+- Gson 2.10.1 — Parseo de JSON y persistencia
+- HttpClient — Consumo de API externa
+- java.time — Marcas de tiempo
+- HTML / CSS / JS — Frontend sin frameworks
 
 ---
 
-API de tasas de cambio
+<em> **API de tasas de cambio** </em>
 
 Este proyecto usa [ExchangeRate API](https://www.exchangerate-api.com/) en su versión gratuita — no requiere API key.
 
