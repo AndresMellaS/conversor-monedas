@@ -1,97 +1,132 @@
-# 💱 Conversor de Monedas
+<h1 align="center"> Conversor de Monedas  </h1> 
 
-Proyecto desarrollado como parte del **Challenge de Alura** — Backend con Java.
+Proyecto desarrollado como parte del Challenge de Alura — Backend con Java.
+
+<h4 align="center">
+:construction: Proyecto en construcción :construction:
+</h4>
 
 Aplicación de conversión de divisas en tiempo real con dos modos de ejecución: consola interactiva y frontend web, ambos conectados al mismo backend con persistencia de historial.
 
 ---
+Tabla de contenidos
 
-## ✨ Funcionalidades
+- [Funcionalidades](#funcionalidades)
+- [Arquitectura del proyecto](#arquitectura-del-proyecto)
+- [Demo](#demo)
+- [Instalación y ejecución](#instalación-y-ejecución)
+- [API REST](#api-rest)
+- [Monedas disponibles](#monedas-disponibles)
+- [Estructura del proyecto](#estructura-del-proyecto)
+- [Tecnologías](#tecnologías)
+- [Autor](#autor)
 
-- 🔄 Conversión entre **23 monedas** con tasas en tiempo real via API
-- 📋 **Historial** de todas las conversiones realizadas
-- 🕐 **Marca de tiempo** en cada conversión usando `java.time.LocalDateTime`
-- 💾 **Persistencia** del historial en `historial.json` — sobrevive reinicios
-- 🌐 **API REST** con Spring Boot — endpoints `/api/convertir` y `/api/historial`
-- 🖥️ **Dos modos**: consola interactiva y frontend web
+
 
 ---
+<a name="funcionalidades"></a>
+ <em>**Funcionalidades**</em>
 
-## 🖥️ Modo Consola
+- Conversión entre 23 monedas con tasas en tiempo real via API
+- Historial de todas las conversiones realizadas
+- Marca de tiempo en cada conversión usando `java.time.LocalDateTime`
+- Persistencia del historial en `historial.json` — sobrevive reinicios
+- API REST con Spring Boot — endpoints `/api/convertir` y `/api/historial`
+- Dos modos: consola interactiva y frontend web
 
-### Menú principal
+---
+<a name="arquitectura-del-proyecto"></a>
+ <em>**Arquitectura del proyecto**</em>
+
+```mermaid
+flowchart TD
+    A[ util / Menu] --> B[Controller]
+    B --> C[ Service]
+    C --> D[ Repository]
+    C --> E[ApiService]
+    D --> F[Model]
+    E --> F
+```
+
+<em> Descripción de las capas</em>
+
+- UI / Menu — Maneja la interacción con el usuario desde la consola.
+- Controller — Expone los endpoints REST y delega la lógica al Service.
+- Service — Contiene la lógica de negocio: conversiones y consumo de la API externa.
+- Repository — Gestiona el almacenamiento y recuperación del historial en `historial.json`.
+- Model — Define las estructuras de datos: `Conversion` y `Moneda`.
+---
+<a name="demo"></a>
+<em> **Demo** </em>
+
+<em> Modo Consola </em>
+Menú principal
 
 ![Menú consola](screenshots/01-menu-consola.png)
 
-### Realizando una conversión
+Realizando una conversión
 
 ![Conversión en consola](screenshots/02-conversion-consola.png)
 
-### Historial con marcas de tiempo
+Historial con marcas de tiempo
 
 ![Historial consola](screenshots/03-historial-consola.png)
 
 ---
 
-## 🌐 Modo Web
+<em> Modo Web </em>
 
-### Servidor Spring Boot activo
+Servidor Spring Boot activo
 
 ![Spring Boot](screenshots/04-spring-boot.png)
 
-### Frontend en el navegador
+Frontend en el navegador
 
 ![Frontend](screenshots/05-frontend.png)
 
 ---
+<a name="instalación-y-ejecución"></a>
+<em> **Instalación y ejecución** </em>
 
-## 🏗️ Estructura del proyecto
+<em> Requitos previos </em>
 
-```
-src/main/
-├── java/com/daniels/conversor/
-│   ├── Main.java
-│   ├── model/
-│   │   ├── Moneda.java
-│   │   └── Conversion.java
-│   ├── service/
-│   │   ├── ApiService.java
-│   │   └── ConversorService.java
-│   ├── repository/
-│   │   └── HistorialRepository.java
-│   ├── controller/
-│   │   └── ConversorController.java
-│   └── util/
-│       └── Menu.java
-└── resources/
-    ├── static/
-    │   └── index.html
-    └── application.properties
+- Java 17 o superior → [Descargar](https://www.oracle.com/java/technologies/downloads/)
+- Maven → [Descargar](https://maven.apache.org/download.cgi)
+
+<em>Clonar el repositorio  </em>
+
+```bash
+git clone https://github.com/AndresMellaS/conversor-monedas.git
+cd conversor-monedas
 ```
 
----
+<em> Modo Web </em>
 
-## 🚀 Cómo ejecutar
+Inicia el servidor Spring Boot:
 
-### Requisitos
-- Java 17 o superior
-- Maven
-
-### Modo Web
 ```bash
 mvn spring-boot:run
 ```
-Abre `http://localhost:8081` en el navegador.
 
-### Modo Consola
+Luego abre tu navegador en:
+
+```
+http://localhost:8081
+```
+
+<em> Modo Consola </em>
+
 Configura una ejecución con el argumento `--consola` en IntelliJ, o ejecuta:
+
 ```bash
 mvn spring-boot:run -Dspring-boot.run.arguments=--consola
+
 ```
 
 ---
 
-## 🔌 API REST
+<a name="api-rest"></a>
+<em>**API REST**</em>
 
 | Método | Endpoint | Descripción |
 |--------|----------|-------------|
@@ -99,7 +134,7 @@ mvn spring-boot:run -Dspring-boot.run.arguments=--consola
 | `GET` | `/api/historial` | Obtiene el historial completo |
 | `DELETE` | `/api/historial` | Limpia el historial |
 
-### Ejemplo de request
+Ejemplo de request
 ```json
 POST /api/convertir
 {
@@ -109,7 +144,7 @@ POST /api/convertir
 }
 ```
 
-### Ejemplo de response
+Ejemplo de response
 ```json
 {
   "desde": "USD",
@@ -122,8 +157,8 @@ POST /api/convertir
 ```
 
 ---
-
-## 💰 Monedas disponibles
+<a name="monedas-disponibles"></a>
+<em> **Monedas disponibles** </em>
 
 | Código | Moneda |
 |--------|--------|
@@ -153,21 +188,50 @@ POST /api/convertir
 
 ---
 
-## 🛠️ Tecnologías
+<a name="estructura-del-proyecto"></a>
+<em> **Estructura del proyecto** </em>
 
-- **Java 17+** — Lógica de negocio y backend
-- **Spring Boot 3.2.3** — Servidor web y API REST
-- **Gson 2.10.1** — Parseo de JSON y persistencia
-- **HttpClient** — Consumo de API externa
-- **java.time** — Marcas de tiempo
-- **HTML / CSS / JS** — Frontend sin frameworks
+```
+src/main/
+├── java/com/daniels/conversor/
+│   ├── Main.java
+│   ├── model/
+│   │   ├── Moneda.java
+│   │   └── Conversion.java
+│   ├── service/
+│   │   ├── ApiService.java
+│   │   └── ConversorService.java
+│   ├── repository/
+│   │   └── HistorialRepository.java
+│   ├── controller/
+│   │   └── ConversorController.java
+│   └── util/
+│       └── Menu.java
+└── resources/
+    ├── static/
+    │   └── index.html
+    └── application.properties
+```
+
 
 ---
+<a name="tecnologías"></a>
+<em>**Tecnologías**</em> 
 
-## 📡 API de tasas de cambio
+- Java 17+ — Lógica de negocio y backend
+- Spring Boot 3.2.3 — Servidor web y API REST
+- Gson 2.10.1 — Parseo de JSON y persistencia
+- HttpClient — Consumo de API externa
+- java.time — Marcas de tiempo
+- HTML / CSS / JS — Frontend sin frameworks
+-API de tasas de cambio
 
 Este proyecto usa [ExchangeRate API](https://www.exchangerate-api.com/) en su versión gratuita — no requiere API key.
 
 ---
+<a name="autor"></a>
+<em>**Autor**</em> 
+
+Daniel Sepúlveda M.
 
 *Challenge Alura — One Oracle Next Education*
